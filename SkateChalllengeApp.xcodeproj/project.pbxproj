@@ -7,21 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */; };
 		1AFD62D21EB8238A0063EE5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */; };
-		1AFD62D41EB8238A0063EE5D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D31EB8238A0063EE5D /* ViewController.swift */; };
+		1AFD62D41EB8238A0063EE5D /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */; };
 		1AFD62D71EB8238A0063EE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62D51EB8238A0063EE5D /* Main.storyboard */; };
 		1AFD62D91EB8238A0063EE5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62D81EB8238A0063EE5D /* Assets.xcassets */; };
 		1AFD62DC1EB8238A0063EE5D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62DA1EB8238A0063EE5D /* LaunchScreen.storyboard */; };
+		1AFD62E41EB8279F0063EE5D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62E31EB8279F0063EE5D /* GoogleService-Info.plist */; };
+		1AFD62E61EB87D2F0063EE5D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62E51EB87D2F0063EE5D /* LoginViewController.swift */; };
+		1AFD62E81EB887A40063EE5D /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62E71EB887A40063EE5D /* SignUpViewController.swift */; };
+		1AFD62EA1EB89AF30063EE5D /* DetailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62E91EB89AF30063EE5D /* DetailSignUpViewController.swift */; };
+		1AFD62EC1EB89C2C0063EE5D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */; };
+		1AFD62EE1EB89D330063EE5D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62ED1EB89D330063EE5D /* HomeViewController.swift */; };
+		1AFD62F11EB8D3740063EE5D /* VideoPostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */; };
+		1AFD62F21EB8D3740063EE5D /* VideoPostViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */; };
+		1AFD62F41EB97D720063EE5D /* ChallengeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62F31EB97D720063EE5D /* ChallengeListViewController.swift */; };
+		D24E2669CDFBAA6497C4B75B /* Pods_SkateChalllengeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D210979365C96886BA9357C3 /* Pods_SkateChalllengeApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPost.swift; sourceTree = "<group>"; };
+		1A816D2C1EBACCB400F18525 /* SwiftyStarRatingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyStarRatingView.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SkateChalllengeApp-cwdxowabfqhzfndqedztwwqehzra/Build/Products/Debug-iphonesimulator/SwiftyStarRatingView/SwiftyStarRatingView.framework"; sourceTree = "<group>"; };
 		1AFD62CE1EB8238A0063EE5D /* SkateChalllengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkateChalllengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1AFD62D31EB8238A0063EE5D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		1AFD62D61EB8238A0063EE5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1AFD62D81EB8238A0063EE5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AFD62DB1EB8238A0063EE5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AFD62DD1EB8238A0063EE5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AFD62E31EB8279F0063EE5D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1AFD62E51EB87D2F0063EE5D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		1AFD62E71EB887A40063EE5D /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		1AFD62E91EB89AF30063EE5D /* DetailSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailSignUpViewController.swift; sourceTree = "<group>"; };
+		1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1AFD62ED1EB89D330063EE5D /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPostViewCell.swift; sourceTree = "<group>"; };
+		1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoPostViewCell.xib; sourceTree = "<group>"; };
+		1AFD62F31EB97D720063EE5D /* ChallengeListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeListViewController.swift; sourceTree = "<group>"; };
+		743D929C2E0942E37775447E /* Pods-SkateChalllengeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkateChalllengeApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SkateChalllengeApp/Pods-SkateChalllengeApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D210979365C96886BA9357C3 /* Pods_SkateChalllengeApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SkateChalllengeApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB427BF5A771DDBF67C67D67 /* Pods-SkateChalllengeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkateChalllengeApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkateChalllengeApp/Pods-SkateChalllengeApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D24E2669CDFBAA6497C4B75B /* Pods_SkateChalllengeApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +66,8 @@
 			children = (
 				1AFD62D01EB8238A0063EE5D /* SkateChalllengeApp */,
 				1AFD62CF1EB8238A0063EE5D /* Products */,
+				527935E65D04BED7D56527A8 /* Pods */,
+				EBC72159E3C40E982EA81BE6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,13 +83,41 @@
 			isa = PBXGroup;
 			children = (
 				1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */,
-				1AFD62D31EB8238A0063EE5D /* ViewController.swift */,
 				1AFD62D51EB8238A0063EE5D /* Main.storyboard */,
+				1AFD62F31EB97D720063EE5D /* ChallengeListViewController.swift */,
+				1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */,
+				1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */,
+				1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */,
+				1AFD62ED1EB89D330063EE5D /* HomeViewController.swift */,
+				1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */,
+				1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */,
+				1AFD62E91EB89AF30063EE5D /* DetailSignUpViewController.swift */,
+				1AFD62E71EB887A40063EE5D /* SignUpViewController.swift */,
+				1AFD62E51EB87D2F0063EE5D /* LoginViewController.swift */,
 				1AFD62D81EB8238A0063EE5D /* Assets.xcassets */,
 				1AFD62DA1EB8238A0063EE5D /* LaunchScreen.storyboard */,
 				1AFD62DD1EB8238A0063EE5D /* Info.plist */,
+				1AFD62E31EB8279F0063EE5D /* GoogleService-Info.plist */,
 			);
 			path = SkateChalllengeApp;
+			sourceTree = "<group>";
+		};
+		527935E65D04BED7D56527A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				743D929C2E0942E37775447E /* Pods-SkateChalllengeApp.debug.xcconfig */,
+				DB427BF5A771DDBF67C67D67 /* Pods-SkateChalllengeApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		EBC72159E3C40E982EA81BE6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1A816D2C1EBACCB400F18525 /* SwiftyStarRatingView.framework */,
+				D210979365C96886BA9357C3 /* Pods_SkateChalllengeApp.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +127,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AFD62E01EB8238A0063EE5D /* Build configuration list for PBXNativeTarget "SkateChalllengeApp" */;
 			buildPhases = (
+				FB3482CFC9B1089FA83E0619 /* [CP] Check Pods Manifest.lock */,
 				1AFD62CA1EB8238A0063EE5D /* Sources */,
 				1AFD62CB1EB8238A0063EE5D /* Frameworks */,
 				1AFD62CC1EB8238A0063EE5D /* Resources */,
+				06DE0965BA6CDF0B45C5DB21 /* [CP] Embed Pods Frameworks */,
+				242C012FC77B8D28796508F3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -125,6 +184,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AFD62DC1EB8238A0063EE5D /* LaunchScreen.storyboard in Resources */,
+				1AFD62F21EB8D3740063EE5D /* VideoPostViewCell.xib in Resources */,
+				1AFD62E41EB8279F0063EE5D /* GoogleService-Info.plist in Resources */,
 				1AFD62D91EB8238A0063EE5D /* Assets.xcassets in Resources */,
 				1AFD62D71EB8238A0063EE5D /* Main.storyboard in Resources */,
 			);
@@ -132,12 +193,68 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		06DE0965BA6CDF0B45C5DB21 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkateChalllengeApp/Pods-SkateChalllengeApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		242C012FC77B8D28796508F3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkateChalllengeApp/Pods-SkateChalllengeApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB3482CFC9B1089FA83E0619 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1AFD62CA1EB8238A0063EE5D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AFD62D41EB8238A0063EE5D /* ViewController.swift in Sources */,
+				1AFD62E61EB87D2F0063EE5D /* LoginViewController.swift in Sources */,
+				1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */,
+				1AFD62EC1EB89C2C0063EE5D /* Extensions.swift in Sources */,
+				1AFD62F11EB8D3740063EE5D /* VideoPostViewCell.swift in Sources */,
+				1AFD62EA1EB89AF30063EE5D /* DetailSignUpViewController.swift in Sources */,
+				1AFD62F41EB97D720063EE5D /* ChallengeListViewController.swift in Sources */,
+				1AFD62D41EB8238A0063EE5D /* UploadViewController.swift in Sources */,
+				1AFD62E81EB887A40063EE5D /* SignUpViewController.swift in Sources */,
+				1AFD62EE1EB89D330063EE5D /* HomeViewController.swift in Sources */,
 				1AFD62D21EB8238A0063EE5D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +376,7 @@
 		};
 		1AFD62E11EB8238A0063EE5D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 743D929C2E0942E37775447E /* Pods-SkateChalllengeApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VG6999JNVA;
@@ -272,6 +390,7 @@
 		};
 		1AFD62E21EB8238A0063EE5D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB427BF5A771DDBF67C67D67 /* Pods-SkateChalllengeApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VG6999JNVA;
@@ -302,6 +421,7 @@
 				1AFD62E21EB8238A0063EE5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
