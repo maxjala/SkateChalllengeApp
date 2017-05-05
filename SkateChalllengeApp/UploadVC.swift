@@ -303,7 +303,7 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         let documentsDirectory: URL = URL(fileURLWithPath: paths[0])
         let dataPath = documentsDirectory.appendingPathComponent(fileName!)
         print(dataPath.absoluteString)
-        let videoAsset = (AVAsset(url: dataPath))
+        let videoAsset = (AVAsset(url: filePath!))
         let playerItem = AVPlayerItem(asset: videoAsset)
         
         // Play the video
@@ -358,7 +358,7 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     
     func getOutputPath( _ name: String ) -> String {
         let documentPath = NSSearchPathForDirectoriesInDomains(      .documentDirectory, .userDomainMask, true )[ 0 ] as NSString
-        let outputPath = "\(documentPath)/\(name))"
+        let outputPath = "\(documentPath)/\(name)"
         return outputPath
     }
     
@@ -369,18 +369,18 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     
     func capture(_ captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAt outputFileURL: URL!, fromConnections connections: [Any]!, error: Error!) {
         print("Recording has finished.")
-//        cropVideo(URL(string: outputFileURL.relativePath)!) { (url) in
-//            //UISaveVideoAtPathToSavedPhotosAlbum("\(url)\(self.createFileName())", nil, nil, nil)
-//            print("\(outputFileURL.relativePath) -> Crop URL : \(url)")
-//
-//            self.filePath = url
-//            
-//
-//        }
+        cropVideo(outputFileURL) { (url) in
+            UISaveVideoAtPathToSavedPhotosAlbum(url.relativePath, nil, nil, nil)
+            print("\(outputFileURL.relativePath) -> Crop URL : \(url.relativePath)")
+
+            self.filePath = url
+            
+
+        }
         //UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.relativePath, nil, nil, nil)
         //UIVideoAtPathIsCompatibleWithSavedPhotosAlbum("\(outputFileURL)")
         // store to gallery
-        UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.relativePath, nil, nil, nil)
+        //UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.relativePath, nil, nil, nil)
         self.presentAVPlayerLayer()
            }
 
