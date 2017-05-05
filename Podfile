@@ -12,6 +12,6 @@ target 'SkateChalllengeApp' do
     pod 'Firebase/Database'
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
-    pod 'SwiftyStarRatingView'
+    pod 'Cosmos'
 
 end

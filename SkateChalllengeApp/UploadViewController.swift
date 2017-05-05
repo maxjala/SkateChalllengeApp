@@ -87,9 +87,12 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
             if UIImagePickerController.availableCaptureModes(for: .rear) != nil {
                 postPrivatelyFirst()
                 
+                //let camOverlay : UIView
+                
                 imagePicker.sourceType = .camera
                 imagePicker.mediaTypes = [kUTTypeMovie as String]
-                //imagePicker.showsCameraControls = false
+                //imagePicker.mediaTypes = [kUTTypeVideo as String]
+                imagePicker.showsCameraControls = true
                 //imagePicker.cameraOverlayView =
 
                 imagePicker.videoMaximumDuration = 30

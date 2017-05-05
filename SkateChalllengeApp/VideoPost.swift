@@ -20,6 +20,7 @@ class VideoPost {
     var thumbnailURL : String = ""
     
     init(anID: Int, aUserID: String, aUserScreenName: String, aUserProfileImageURL: String, aTrickType: String, aVideoURL: String, aThumbnailURL: String, aTimeStamp: String) {
+        videoPostID = anID
         userID = aUserID
         userScreenName = aUserScreenName
         userProfileImageURL = aUserProfileImageURL

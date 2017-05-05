@@ -13,7 +13,7 @@ import FirebaseStorage
 //import MobileCoreServices
 import AVKit
 import AVFoundation
-import SwiftyStarRatingView
+import Cosmos
 
 class HomeViewController: UIViewController {
     
@@ -115,28 +115,28 @@ extension HomeViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VideoPostViewCell.cellIdentifier) as? VideoPostViewCell else { return UITableViewCell() }
         let currentVideo = videoFeed[indexPath.row]
-        //let videoURL = currentVideo.videoURL
-        //let videoURL = URL(string: videoURLString)
         let profilePic = currentVideo.userProfileImageURL
         let trickType = currentVideo.trickType
         let screenName = currentVideo.userScreenName
         let thumbnailURL = currentVideo.thumbnailURL
         
         cell.profileImageView.loadImageUsingCacheWithUrlString(urlString: profilePic)
-        //cell.previewImageView.image = thumbnailForVideoFileURL(fileURL: videoURL!)
         cell.previewImageView.loadImageUsingCacheWithUrlString(urlString: thumbnailURL)
         cell.hashtagLabel.text = trickType
         cell.userNameLabel.text = screenName
         
+        //Assign Star Ratings
+        observeUserRating(_id: currentVideo.videoPostID, _starRating: cell.userRatingView)
+        observeAllRatings(_id: currentVideo.videoPostID, _starRatings: cell.publicRatingView)
+        
         cell.delegate = self
         cell.videoPost = currentVideo
-        //cell.videoView = cell.
-        
         
         return cell
         
     }
     
+    //Video Streaming Functions For Cell
     func handlePlay(_videoURL: String, _videoView: UIView) {
         if let url = URL(string: _videoURL) {
             if player == nil {
@@ -163,13 +163,41 @@ extension HomeViewController : UITableViewDataSource {
         player = nil
     }
     
-    func sendToFireBase(_videoPost: VideoPost, _starView: SwiftyStarRatingView) {
-        
-        let rate = [currentUserID: _starView.value]
-        
-        
-        ref.child("posts").child("\(_videoPost.videoPostID)").child("ratings").updateChildValues(rate)
+    //Firebase Observations for Cell Display Elements
+    func observeUserRating(_id: Int, _starRating: CosmosView) {
+        ref.child("posts").child("\(_id)").child("ratings").child(currentUserID).observe(.value, with: {(snapshot) in
+            print("Value: " , snapshot)
+            
+            guard let existingRating = snapshot.value as? String else {return}
+            let doubleValue = Double(existingRating)
+            
+            _starRating.rating = doubleValue!
+        })
     }
+    
+    func observeAllRatings(_id: Int, _starRatings: CosmosView) {
+        ref.child("posts").child("\(_id)").child("ratings").observe(.value, with: {(snapshot) in
+            print("Value: " , snapshot)
+            
+            //guard let existingRating = snapshot.value as? String else {return}
+            var averageRating = 0.0
+            
+            guard let ratingDict = snapshot.value as? NSDictionary else {return}
+            let ratingCount = snapshot.childrenCount
+            
+            guard let ratingValues = ratingDict.allValues as? [String] else {return}
+            
+            for each in ratingValues {
+                averageRating += Double(each)!
+            }
+            
+            _starRatings.rating = averageRating/Double(ratingCount)
+        })
+    }
+    
+    
+    
+    
     
 }
 
@@ -184,10 +212,21 @@ extension HomeViewController : VideoPostDelegate {
     func loadVideo(_ post: VideoPost, _ videoView: UIView) {
         handlePlay(_videoURL: post.videoURL, _videoView: videoView)
     }
-    
-    func sendStarRating(_ post: VideoPost, _ starView: SwiftyStarRatingView) {
-        sendToFireBase(_videoPost: post, _starView: starView)
+
+    func sendRatingToFirebase(_ post: VideoPost, _ rating: Double) {
+        let rate = [self.currentUserID: "\(rating)"]
+        self.ref.child("posts").child("\(post.videoPostID)").child("ratings").updateChildValues(rate)
     }
+    
+//    func observeRatingFromFirebase(_ post: VideoPost) -> Double {
+//        observeVideoPostRatings(_id: post.videoPostID)
+//        return 1.0
+//    }
+    
+//    func observeRatingFromFirebase(_ post: VideoPost, _ videoRating: CosmosView) {
+//        observeVideoPostRatings(_id: post.videoPostID)
+//    }
+    
 }
 
 

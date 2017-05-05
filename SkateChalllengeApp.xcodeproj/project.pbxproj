@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A23CC3D1EBB689600CC1942 /* UploadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC3C1EBB689600CC1942 /* UploadVC.swift */; };
 		1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */; };
 		1AFD62D21EB8238A0063EE5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */; };
 		1AFD62D41EB8238A0063EE5D /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A23CC3C1EBB689600CC1942 /* UploadVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVC.swift; sourceTree = "<group>"; };
 		1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPost.swift; sourceTree = "<group>"; };
 		1A816D2C1EBACCB400F18525 /* SwiftyStarRatingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyStarRatingView.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SkateChalllengeApp-cwdxowabfqhzfndqedztwwqehzra/Build/Products/Debug-iphonesimulator/SwiftyStarRatingView/SwiftyStarRatingView.framework"; sourceTree = "<group>"; };
 		1AFD62CE1EB8238A0063EE5D /* SkateChalllengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkateChalllengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,11 +85,12 @@
 			isa = PBXGroup;
 			children = (
 				1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */,
+				1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */,
+				1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */,
 				1AFD62D51EB8238A0063EE5D /* Main.storyboard */,
 				1AFD62F31EB97D720063EE5D /* ChallengeListViewController.swift */,
 				1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */,
-				1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */,
-				1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */,
+				1A23CC3C1EBB689600CC1942 /* UploadVC.swift */,
 				1AFD62ED1EB89D330063EE5D /* HomeViewController.swift */,
 				1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */,
 				1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */,
@@ -250,6 +253,7 @@
 				1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */,
 				1AFD62EC1EB89C2C0063EE5D /* Extensions.swift in Sources */,
 				1AFD62F11EB8D3740063EE5D /* VideoPostViewCell.swift in Sources */,
+				1A23CC3D1EBB689600CC1942 /* UploadVC.swift in Sources */,
 				1AFD62EA1EB89AF30063EE5D /* DetailSignUpViewController.swift in Sources */,
 				1AFD62F41EB97D720063EE5D /* ChallengeListViewController.swift in Sources */,
 				1AFD62D41EB8238A0063EE5D /* UploadViewController.swift in Sources */,

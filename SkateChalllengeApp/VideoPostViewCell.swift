@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import SwiftyStarRatingView
+import Cosmos
+
 
 protocol VideoPostDelegate {
     func loadVideo(_ post: VideoPost, _ videoView: UIView)
-    //func goToProfile(_ post: PicturePost)
-    func sendStarRating(_ post: VideoPost, _ starView: SwiftyStarRatingView)
+    func sendRatingToFirebase(_ post: VideoPost, _ rating: Double)
+    //func observeRatingFromFirebase(_ post: VideoPost, _ videoRating: CosmosView)
 }
 
 class VideoPostViewCell: UITableViewCell {
@@ -51,13 +52,22 @@ class VideoPostViewCell: UITableViewCell {
     
     @IBOutlet weak var hashtagLabel: UILabel!
     
-    @IBOutlet weak var userStarRatingView: SwiftyStarRatingView! {
+    @IBOutlet weak var userRatingView: CosmosView! {
         didSet{
-            userStarRatingView.accurateHalfStars = false
-            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(starViewTapped(_:)))
-            userStarRatingView.addGestureRecognizer(gestureRecognizer)
+            userRatingView.didFinishTouchingCosmos = { rating in
+                self.cosmosViewTapped(rating)
+            }
         }
     }
+    
+    @IBOutlet weak var publicRatingView: CosmosView! {
+        didSet{
+            publicRatingView.settings.fillMode = .precise
+        }
+    }
+    
+    @IBOutlet weak var ratingLabel: UILabel!
+
     
     static let cellIdentifier = "VideoPostViewCell"
     static let cellNib = UINib(nibName: VideoPostViewCell.cellIdentifier, bundle: Bundle.main)
@@ -75,16 +85,6 @@ class VideoPostViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func starViewTapped(_:UITapGestureRecognizer) {
-        if delegate != nil {
-            if let _videoPost = videoPost,
-                let _starView = userStarRatingView {
-                delegate?.sendStarRating(_videoPost, _starView)
-            }
-        }
-    }
-    
-    
     func playVideoButtonTapped() {
         if delegate != nil {
             if let _videoPost = videoPost,
@@ -93,5 +93,21 @@ class VideoPostViewCell: UITableViewCell {
             }
         }
     }
-    
+        
+//    func observeRating() -> Double {
+//        if delegate != nil {
+//            if let _videoPost = videoPost,
+//                let _videoRating = userRatingView {
+//                delegate?.observeRatingFromFirebase(_videoPost, _videoRating)            }
+//        }
+//        return 0.0
+//    }
+
+    func cosmosViewTapped(_ rating: Double) {
+        
+        if delegate != nil {
+            if let _videoPost = videoPost {
+                delegate?.sendRatingToFirebase(_videoPost, rating)            }
+        }
+    }
 }
