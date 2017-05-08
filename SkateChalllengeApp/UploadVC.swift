@@ -17,11 +17,30 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     
     @IBOutlet weak var recordButton: UIButton! {
         didSet{
+            recordButton.isHidden = true
             recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
         }
     }
     
+    @IBOutlet weak var cameraFrameView1: UIView!
+    
+    @IBOutlet weak var cameraFrameView2: UIView!
+    
     @IBOutlet weak var previewImageView: UIImageView!
+    
+    @IBOutlet weak var toggleCameraButton: UIButton! {
+        didSet{
+            toggleCameraButton.addTarget(self, action: #selector(toggleCamButtonTapped), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var timerLabel: UILabel! {
+        didSet{
+            timerLabel.isHidden = true
+        }
+    }
+    
+    
     
     @IBOutlet weak var playButton: UIButton! {
         didSet{
@@ -30,16 +49,40 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         }
     }
     
+    @IBOutlet weak var challengeLabel: UILabel! {
+        didSet{
+            challengeLabel.text = chosenChallenge
+        }
+    }
+    
+    @IBOutlet weak var backButton: UIButton! {
+        didSet{
+            backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var postButton: UIButton! {
+        didSet{
+            postButton.addTarget(self, action: #selector(postButtonTapped), for: .touchUpInside)
+            //postButton.isEnabled = false
+        }
+    }
+
+    
     var ref: FIRDatabaseReference!
     var currentUser : FIRUser? = FIRAuth.auth()?.currentUser
     var currentUserID : String = ""
     var currentUserEmail : String = ""
     var profileScreenName : String = ""
     var profileImageURL : String = ""
+    var chosenChallenge : String = ""
     
     var videoCaptureDevice : AVCaptureDevice? // check capture device availability
     var audioCaptureDevice : AVCaptureDevice?
     let captureSession = AVCaptureSession() // to create capture session
+    
+    var timer = Timer()
+    var seconds = 30 // timer for recorded videos
     
     var previewLayer : AVCaptureVideoPreviewLayer? // to add video inside container
     var playerLayer : AVPlayerLayer?
@@ -49,7 +92,8 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     var filePath : URL?
     var fileName : String?
     
-    var thumbnailURL : String?
+    var thumbnailURL : String = ""
+    var videoURL : String = ""
     
     //trying out AssetWriter
     var assetWriter : AVAssetWriter?
@@ -59,10 +103,6 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         setCurrentUser()
-        captureSession.sessionPreset = AVCaptureSessionPresetMedium
-        fileName = createFileName()
-        filePath = savePath()
-        setUpCamera()
     }
     
     override func viewWillLayoutSubviews() {
@@ -104,6 +144,23 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         })
     }
     
+    func toggleCamButtonTapped() {
+        captureSession.sessionPreset = AVCaptureSessionPresetMedium
+        fileName = createFileName()
+        filePath = savePath()
+        setUpCamera()
+        recordButton.isHidden = false
+        cameraFrameView1.isHidden = false
+        cameraFrameView2.isHidden = false
+        timerLabel.isHidden = false
+        view.bringSubview(toFront: cameraFrameView1)
+        view.bringSubview(toFront: cameraFrameView2)
+        view.bringSubview(toFront: backButton)
+        view.bringSubview(toFront: timerLabel)
+        view.bringSubview(toFront: recordButton)
+        toggleCameraButton.isEnabled = false
+    }
+    
     func createFileName() -> String {
         let currentDate = NSDate()
         let uniqueTimeID = Int(currentDate.timeIntervalSince1970)
@@ -116,9 +173,9 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     }
     
     func setUpCamera() {
-        if let videoDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .back),
-            let audioDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInMicrophone, mediaType: AVMediaTypeAudio, position: .unspecified) {
-            beginSession(_audioCaptureDevice: audioDevice, _videoCaptureDevice: videoDevice)
+        if let videoCaptureDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .back),
+            let audioCaptureDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInMicrophone, mediaType: AVMediaTypeAudio, position: .unspecified) {
+            beginSession(_audioCaptureDevice: audioCaptureDevice, _videoCaptureDevice: videoCaptureDevice)
         }
     }
     
@@ -137,11 +194,9 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.frame = view.bounds
-        //previewLayer?.connection.videoOrientation = AVCaptureVideoOrientation.portrait
         previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         view.layer.addSublayer(previewLayer!)
-        
-        view.bringSubview(toFront: recordButton)
+        videoFileOutput.maxRecordedDuration = CMTimeMakeWithSeconds(30, 30)
         captureSession.startRunning()
     }
     
@@ -157,58 +212,6 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         }
     }
     
-//    func setUpAssetWriter() {
-//    
-//    let fileManager = FileManager.default
-//    let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-//    guard let documentDirectory: NSURL = urls.first as NSURL? else {
-//    print("Video Controller: getAssetWriter: documentDir Error")
-//    return
-//    }
-//    
-//    //let local_video_name = NSUUID().uuidString + ".mp4"
-//    self.filePath = documentDirectory.appendingPathComponent(fileName!)
-//    
-//    guard let url = self.filePath else {
-//    return
-//    }
-//    
-//    
-//    self.assetWriter = try! AVAssetWriter(outputURL: url, fileType: AVFileTypeMPEG4)
-//    
-//    guard let writer = self.assetWriter else {
-//    return
-//    }
-//    
-//    //TODO: Set your desired video size here!
-//    let videoSettings: [String : AnyObject] = [
-//        AVVideoCodecKey  : AVVideoCodecH264 as AnyObject,
-//        AVVideoWidthKey  : previewImageView.frame.width as AnyObject,//may not be correct
-//        AVVideoHeightKey : previewImageView.frame.height as AnyObject,
-//        AVVideoCompressionPropertiesKey : [
-//            AVVideoAverageBitRateKey : 200000,
-//            AVVideoProfileLevelKey : AVVideoProfileLevelH264Baseline41,
-//            AVVideoMaxKeyFrameIntervalKey : 90,
-//        ],
-//        ]
-//    
-//    assetWriterInputCamera = AVAssetWriterInput(mediaType: AVMediaTypeVideo, outputSettings: videoSettings)
-//    assetWriterInputCamera?.expectsMediaDataInRealTime = true
-//    writer.addInput(assetWriterInputCamera!)
-//    
-//    let audioSettings : [String : AnyObject] = [
-//        AVFormatIDKey : NSInteger(kAudioFormatMPEG4AAC) as AnyObject,
-//        AVNumberOfChannelsKey : 2 as AnyObject,
-//        AVSampleRateKey : NSNumber(value: 44100.0)
-//    ]
-//    
-//    assetWriterInputAudio = AVAssetWriterInput(mediaType: AVMediaTypeAudio, outputSettings: audioSettings)
-//    assetWriterInputAudio?.expectsMediaDataInRealTime = true
-//    writer.addInput(assetWriterInputAudio!)
-//    
-//        
-//    }
-
     func recordButtonTapped() {
         
         if !videoFileOutput.isRecording {
@@ -218,46 +221,104 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
             let recordingDelegate:AVCaptureFileOutputRecordingDelegate? = self
             videoFileOutput.recordsVideoOrientationAndMirroringChangesAsMetadataTrack(for: previewLayer?.connection)
             videoFileOutput.startRecording(toOutputFileURL: filePath, recordingDelegate: recordingDelegate)
-            //audio
-//            videoFileOutput.setRecordsVideoOrientationAndMirroringChanges(true, asMetadataTrackFor: previewLayer?.connection)
+
+            backButton.isHidden = true
+            postPrivatelyFirst()
             
-//            let orientation: UIDeviceOrientation = UIDevice.current.orientation
-//            print(orientation)
-//            
-//            switch (orientation) {
-//            case .portrait:
-//                previewLayer?.connection.videoOrientation = .portrait
-//                previewLayer?.frame = view.bounds
-//            case .landscapeRight:
-//                previewLayer?.connection.videoOrientation = .landscapeLeft
-//                previewLayer?.frame = view.bounds
-//            case .landscapeLeft:
-//                previewLayer?.connection.videoOrientation = .landscapeRight
-//                previewLayer?.frame = view.bounds
-//            default:
-//                previewLayer?.connection.videoOrientation = .portrait
-//                previewLayer?.frame = view.bounds
-//            }
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(counter), userInfo: nil, repeats: true)
 
         } else {
             
             videoFileOutput.stopRecording()
             captureSession.removeOutput(videoFileOutput)
             captureSession.stopRunning()
+            //timer.invalidate()
 
         }
     }
     
+    func counter() {
+        seconds -= 1
+        timerLabel.text = "\(seconds)"
+        
+//        if seconds == 0 {
+//            timer.invalidate()
+//        }
+    }
+    
+    func postPrivatelyFirst() {
+        let currentDate = NSDate()
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+        let uniqueTimeID = Int(currentDate.timeIntervalSince1970)
+        let trickTag = challengeLabel.text?.lowercased()
+        let firebaseKey = trickTag?.replacingOccurrences(of: "#", with: "")
+        
+        let personalReference : [String : Any] = ["userID" : currentUserID]
+        
+        self.ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).child("\(uniqueTimeID)").updateChildValues(personalReference)
+        
+    }
+    
+    func cropVideo( _ outputFileUrl: URL, callback: @escaping ( _ newUrl: URL ) -> () ) {
+        // Get input clip
+        let videoAsset: AVAsset = AVAsset( url: outputFileUrl )
+        let clipVideoTrack = videoAsset.tracks( withMediaType: AVMediaTypeVideo ).first! as AVAssetTrack
+        
+        // Make video to square
+        let videoComposition = AVMutableVideoComposition()
+        videoComposition.renderSize = CGSize( width: clipVideoTrack.naturalSize.height, height: clipVideoTrack.naturalSize.height )
+        videoComposition.frameDuration = CMTimeMake( 1, 30)
+        
+        // Rotate to portrait
+        let transformer = AVMutableVideoCompositionLayerInstruction( assetTrack: clipVideoTrack )
+        let transform1 = CGAffineTransform( translationX: clipVideoTrack.naturalSize.height, y: -( clipVideoTrack.naturalSize.width - clipVideoTrack.naturalSize.height ) / 2 )
+        let transform2 = transform1.rotated(by: CGFloat( M_PI_2 ) )
+        transformer.setTransform( transform2, at: kCMTimeZero)
+        
+        //let transf = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
+        
+        let instruction = AVMutableVideoCompositionInstruction()
+        instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds( 60, 30) )
+        
+        instruction.layerInstructions = [transformer]
+        videoComposition.instructions = [instruction]
+        
+        let croppedOutputFileURL: URL = URL(fileURLWithPath: getOutputPath(createFileName()))
+        
+        let exporter = AVAssetExportSession(asset: videoAsset, presetName: AVAssetExportPresetHighestQuality)!
+        exporter.videoComposition = videoComposition
+        exporter.outputURL = croppedOutputFileURL
+        exporter.outputFileType = AVFileTypeQuickTimeMovie
+        
+        exporter.exportAsynchronously( completionHandler: { () -> Void in
+            DispatchQueue.main.async(execute: {
+                callback( croppedOutputFileURL )
+            })
+        })
+    }
+    
+    func getOutputPath( _ name: String ) -> String {
+        let documentPath = NSSearchPathForDirectoriesInDomains(      .documentDirectory, .userDomainMask, true )[ 0 ] as NSString
+        let outputPath = "\(documentPath)/\(name)"
+        return outputPath
+    }
+    
     func presentAVPlayerLayer(){
         previewLayer?.removeFromSuperlayer()
+        //cameraFrameView1.isHidden = true
+        //cameraFrameView2.isHidden = true
         playButton.isHidden = false
-        recordButton.removeFromSuperview()
-        
-        // Create Thumbnail Image for Video and Upload to Firebase
-        if let thumbnail = thumbnailForVideoFileURL(fileURL: filePath!) {
-            previewImageView.image = thumbnail
-            uploadImage(thumbnail)
-        }
+        recordButton.isHidden = true
+        timerLabel.isHidden = true
+        toggleCameraButton.isHidden = true
+        backButton.isHidden = false
+        //view.sendSubview(toBack: toggleCameraButton)
+        view.bringSubview(toFront: challengeLabel)
+        view.bringSubview(toFront: backButton)
+        view.bringSubview(toFront: postButton)
+        view.bringSubview(toFront: backButton)
+        previewLayer = nil
     }
     
     func thumbnailForVideoFileURL(fileURL: URL) -> UIImage? {
@@ -275,23 +336,25 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         return nil
     }
     
-    func uploadImage(_ image: UIImage) {
+    func uploadImageAndUseThumbnail(_ image: UIImage) {
+        
+        previewImageView.image = image
         
         let ref = FIRStorage.storage().reference()
-        guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {return}
+        guard let imageData = UIImageJPEGRepresentation(image, 1) else {return}
         let metaData = FIRStorageMetadata()
+        
         metaData.contentType = "image/jpeg"
         ref.child("\(currentUser?.email)-\(Date()).jpeg").put(imageData, metadata: metaData) { (meta, error) in
             
             if let downloadPath = meta?.downloadURL()?.absoluteString {
-                
-                
                 self.thumbnailURL = downloadPath
-                
             }
         }
     }
-
+    
+    
+    
     
     func playVideo() {
         print("Play a video")
@@ -316,54 +379,99 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         }
     }
     
-    func cropVideo( _ outputFileUrl: URL, callback: @escaping ( _ newUrl: URL ) -> () ) {
-        // Get input clip
-        let videoAsset: AVAsset = AVAsset( url: outputFileUrl )
-        let clipVideoTrack = videoAsset.tracks( withMediaType: AVMediaTypeVideo ).first! as AVAssetTrack
+    
+    func postButtonTapped() {
+        let currentDate = NSDate()
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+        let uniqueTimeID = Int(currentDate.timeIntervalSince1970)
+        let timeCreated = dateFormatter.string(from: currentDate as Date)
+        let trickTag = challengeLabel.text?.lowercased()
+        let firebaseKey = trickTag?.replacingOccurrences(of: "#", with: "")
         
-        // Make video to square
-        let videoComposition = AVMutableVideoComposition()
-        videoComposition.renderSize = CGSize( width: clipVideoTrack.naturalSize.height, height: clipVideoTrack.naturalSize.height )
-        videoComposition.frameDuration = CMTimeMake( 1, 30)
         
-        // Rotate to portrait
-        let transformer = AVMutableVideoCompositionLayerInstruction( assetTrack: clipVideoTrack )
-        let transform1 = CGAffineTransform( translationX: clipVideoTrack.naturalSize.height, y: -( clipVideoTrack.naturalSize.width - clipVideoTrack.naturalSize.height ) / 2 )
-        let transform2 = transform1.rotated(by: CGFloat( M_PI_2 ) )
-        transformer.setTransform( transform2, at: kCMTimeZero)
-        
-        let instruction = AVMutableVideoCompositionInstruction()
-        instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds( 30, 30) )
-        
-        instruction.layerInstructions = [transformer]
-        videoComposition.instructions = [instruction]
-        
-        // Export
-        //let croppedOutputFileUrl = URL(fileURLWithPath: <#T##String#>)
-        let paths = NSSearchPathForDirectoriesInDomains(
-            FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-        let croppedOutputFileURL: URL = URL(fileURLWithPath: getOutputPath(createFileName()))
-        
-        let exporter = AVAssetExportSession(asset: videoAsset, presetName: AVAssetExportPresetHighestQuality)!
-        exporter.videoComposition = videoComposition
-        exporter.outputURL = croppedOutputFileURL
-        exporter.outputFileType = AVFileTypeQuickTimeMovie
-        
-        exporter.exportAsynchronously( completionHandler: { () -> Void in
-            DispatchQueue.main.async(execute: {
-                callback( croppedOutputFileURL )
-            })
-        })
+        if self.videoURL != "" {
+            // write to firebase
+            let post : [String : Any] = ["userID": self.currentUserID, "screenName": self.profileScreenName,"profileImageURL": self.profileImageURL,"trickType": chosenChallenge, "postedVideoURL" : self.videoURL, "thumbnailURL": self.thumbnailURL, "timestamp": timeCreated]
+            
+            let personalReference : [String : Any] = ["userID" : currentUserID, "postID" : uniqueTimeID]
+            
+            //self.ref.child("posts").child(firebaseKey!).child("\(uniqueTimeID)").updateChildValues(post)
+            self.ref.child("posts").child("\(uniqueTimeID)").updateChildValues(post)
+            
+            self.ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).removeValue()
+            
+            self.ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).child("\(uniqueTimeID)").updateChildValues(personalReference)
+            
+            let controller = storyboard?.instantiateViewController(withIdentifier: "TabBarController")
+            present(controller!, animated: true, completion: nil)
+        }
     }
     
-    func getOutputPath( _ name: String ) -> String {
-        let documentPath = NSSearchPathForDirectoriesInDomains(      .documentDirectory, .userDomainMask, true )[ 0 ] as NSString
-        let outputPath = "\(documentPath)/\(name)"
-        return outputPath
+    func backButtonTapped() {
+        if previewLayer != nil {
+            previewLayer?.removeFromSuperlayer()
+            previewLayer = nil
+            timerLabel.isHidden = true
+            recordButton.isHidden = true
+            postButton.isHidden = false
+            view.bringSubview(toFront: challengeLabel)
+            view.bringSubview(toFront: postButton)
+            view.bringSubview(toFront: toggleCameraButton)
+            toggleCameraButton.isEnabled = true
+            
+            //remove
+            let inputs = captureSession.inputs as! [AVCaptureInput]
+            for oldInput:AVCaptureInput in inputs {
+                captureSession.removeInput(oldInput)
+            }
+        } else if self.thumbnailURL != "" {
+            let alertController = UIAlertController(title: "Are you sure?", message: "You can only try this challenge again in 2 hours time.", preferredStyle: .alert)
+            let goBackAction = UIAlertAction(title: "Flight", style: .destructive, handler: { (alert:UIAlertAction) in
+                self.dismiss(animated: true, completion: nil)
+            })
+            alertController.addAction(goBackAction)
+            let cancelAction = UIAlertAction(title: "Fight", style: .destructive, handler: nil)
+            alertController.addAction(cancelAction)
+            
+            present(alertController, animated: true, completion: nil)
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
     }
+    
+    func uploadVideoToStorage(url: URL) {
+        let storageRef = FIRStorage.storage().reference()
+        let uploadTask = storageRef.child(fileName!).putFile(url, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                print("Error when uploading to FIRStorage : \(error?.localizedDescription)")
+                return
+            }
+            
+            self.videoURL = (metadata?.downloadURL()?.absoluteString)!
+            
+            print("Video URL : " , self.videoURL)
+            
+        })
+        
+        uploadTask.observe(.progress, handler: { (snapshot) in
+            print("Progress : " , snapshot.progress?.fractionCompleted)
+            var percentage = Int((snapshot.progress?.fractionCompleted)! * 100)
+            //self.progressLabel.text = "\(percentage)%"
+            
+            if percentage == 100 {
+  
+            }
+        })
+        
+    }
+    
+
+
     
     func capture(_ captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAt fileURL: URL!, fromConnections connections: [Any]!) {
-        
+        //print("Recording time is: \(videoFileOutput.recordedDuration)")
     }
     
     
@@ -374,15 +482,14 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
             print("\(outputFileURL.relativePath) -> Crop URL : \(url.relativePath)")
 
             self.filePath = url
+            self.uploadImageAndUseThumbnail(self.thumbnailForVideoFileURL(fileURL: url)!)
+            self.uploadVideoToStorage(url: url)
             
 
         }
-        //UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.relativePath, nil, nil, nil)
-        //UIVideoAtPathIsCompatibleWithSavedPhotosAlbum("\(outputFileURL)")
-        // store to gallery
-        //UISaveVideoAtPathToSavedPhotosAlbum(outputFileURL.relativePath, nil, nil, nil)
+        timer.invalidate()
         self.presentAVPlayerLayer()
-           }
+   }
 
 }
 

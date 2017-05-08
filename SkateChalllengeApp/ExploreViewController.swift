@@ -15,13 +15,15 @@ import AVKit
 import AVFoundation
 import Cosmos
 
-class HomeViewController: UIViewController {
+class ExploreViewController: UIViewController {
     
     @IBOutlet weak var videoTableView: UITableView! {
         didSet{
             videoTableView.delegate = self
             videoTableView.dataSource = self
             videoTableView.register(VideoPostViewCell.cellNib, forCellReuseIdentifier: VideoPostViewCell.cellIdentifier)
+            videoTableView.estimatedRowHeight = 520.0
+            videoTableView.rowHeight = UITableViewAutomaticDimension
         }
     }
     
@@ -103,17 +105,14 @@ class HomeViewController: UIViewController {
 
 }
 
-extension HomeViewController : UITableViewDataSource {
+extension ExploreViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videoFeed.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 510
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VideoPostViewCell.cellIdentifier) as? VideoPostViewCell else { return UITableViewCell() }
+        
         let currentVideo = videoFeed[indexPath.row]
         let profilePic = currentVideo.userProfileImageURL
         let trickType = currentVideo.trickType
@@ -195,20 +194,27 @@ extension HomeViewController : UITableViewDataSource {
         })
     }
     
-    
+    //func table
     
     
     
 }
 
-extension HomeViewController : UITableViewDelegate {
+extension ExploreViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
     
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        player = nil
+
+    }
+    
+    
 }
 
-extension HomeViewController : VideoPostDelegate {
+extension ExploreViewController : VideoPostDelegate {
     func loadVideo(_ post: VideoPost, _ videoView: UIView) {
         handlePlay(_videoURL: post.videoURL, _videoView: videoView)
     }
@@ -217,15 +223,6 @@ extension HomeViewController : VideoPostDelegate {
         let rate = [self.currentUserID: "\(rating)"]
         self.ref.child("posts").child("\(post.videoPostID)").child("ratings").updateChildValues(rate)
     }
-    
-//    func observeRatingFromFirebase(_ post: VideoPost) -> Double {
-//        observeVideoPostRatings(_id: post.videoPostID)
-//        return 1.0
-//    }
-    
-//    func observeRatingFromFirebase(_ post: VideoPost, _ videoRating: CosmosView) {
-//        observeVideoPostRatings(_id: post.videoPostID)
-//    }
     
 }
 

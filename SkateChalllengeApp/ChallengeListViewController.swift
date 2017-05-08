@@ -20,11 +20,15 @@ class ChallengeListViewController: UIViewController {
     
     @IBOutlet weak var continueButton: UIButton! {
         didSet{
-            continueButton.addTarget(self, action: #selector(checkUserUploads), for: .touchUpInside)
+            continueButton.addTarget(self, action: #selector(continueToUpload), for: .touchUpInside)
         }
     }
     
-    @IBOutlet weak var challengeLabel: UILabel!
+    @IBOutlet weak var challengeLabel: UILabel! {
+        didSet{
+            challengeLabel.text = ""
+        }
+    }
     
     @IBOutlet weak var categorySegControl: UISegmentedControl!
     
@@ -83,20 +87,6 @@ class ChallengeListViewController: UIViewController {
     }
     
     func continueToUpload() {
-        if challengeLabel.text != "" {
-            let vc = storyboard?.instantiateViewController(withIdentifier: "UploadViewController") as? UploadViewController
-            //let vc = navController?.viewControllers.first as? UploadViewController
-            vc?.chosenChallenge = challengeLabel.text
-            
-            //navigationController?.presen(controller!, animated: true)
-            //present(navController!, animated: true, completion: nil)
-            //navController?.pushViewController(vc!, animated: true)
-            navigationController?.present(vc!, animated: true, completion: nil)
-        }
-        return
-    }
-    
-    func checkUserUploads() {
         let word = challengeLabel.text?.lowercased()
         let firebaseKey = word?.replacingOccurrences(of: "#", with: "")
         let currentDate = Date()
@@ -104,27 +94,31 @@ class ChallengeListViewController: UIViewController {
         let twoHrsInSecs = 7200
         
         //test timeInt 1493793537
+        if challengeLabel.text != "" {
         
-        ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).observe(.value, with: { (snapshot) in
-            print("Value : " , snapshot)
-            
-            guard let posts = snapshot.value as? NSDictionary else {self.continueToUpload(); return}
-            guard let challengePosts = posts.allKeys as? [String] else {return}
-            
-            let lastPost = challengePosts.last
-            let lastPostTime = Int(lastPost!)
-            
-            if currentTimeStamp - twoHrsInSecs > lastPostTime! {
-                self.continueToUpload()
-            } else {
-                return
-            }
-            
-            
-            //guard let post = snapshot.
-            
-            
-        })
+            ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).observe(.value, with: { (snapshot) in
+                print("Value : " , snapshot)
+                
+                guard let posts = snapshot.value as? NSDictionary else {self.continueToUpload(); return}
+                guard let challengePosts = posts.allKeys as? [String] else {return}
+                
+                let lastPost = challengePosts.last
+                let lastPostTime = Int(lastPost!)
+                
+                if currentTimeStamp - twoHrsInSecs > lastPostTime! {
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadVC") as? UploadVC
+                    vc?.chosenChallenge = self.challengeLabel.text!
+                    self.navigationController?.present(vc!, animated: true, completion: nil)
+                } else {
+                    return
+                }
+                
+                
+                //guard let post = snapshot.
+                
+                
+            })
+        }
     }
 
 

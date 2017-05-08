@@ -63,6 +63,7 @@ class VideoPostViewCell: UITableViewCell {
     @IBOutlet weak var publicRatingView: CosmosView! {
         didSet{
             publicRatingView.settings.fillMode = .precise
+            publicRatingView.isUserInteractionEnabled = false
         }
     }
     
@@ -77,6 +78,12 @@ class VideoPostViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        videoPost = nil
+        videoView.layer.sublayers?.removeAll()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

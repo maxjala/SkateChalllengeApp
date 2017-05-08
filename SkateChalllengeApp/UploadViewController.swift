@@ -241,22 +241,6 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
                 
             })
             
-            uploadTask.observe(.progress, handler: { (snapshot) in
-                print("Progress : " , snapshot.progress?.fractionCompleted)
-                let percentage = Int((snapshot.progress?.fractionCompleted)! * 100)
-                self.progressLabel.text = "\(percentage)%"
-                
-                if self.progressLabel.text == "100%" {
-                    self.progressLabel.text = "Upload Completed!"
-                    
-                    self.playButton.isHidden = false
-                    
-                    
-                }
-                
-                
-            })
-            
         }
         
         
