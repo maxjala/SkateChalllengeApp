@@ -9,9 +9,14 @@
 /* Begin PBXBuildFile section */
 		1A23CC3D1EBB689600CC1942 /* UploadVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC3C1EBB689600CC1942 /* UploadVC.swift */; };
 		1A23CC3F1EC0094100CC1942 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC3E1EC0094100CC1942 /* User.swift */; };
+		1A23CC421EC0235C00CC1942 /* ProfileOverviewViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC401EC0235C00CC1942 /* ProfileOverviewViewCell.swift */; };
+		1A23CC431EC0235C00CC1942 /* ProfileOverviewViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A23CC411EC0235C00CC1942 /* ProfileOverviewViewCell.xib */; };
+		1A23CC451EC02E6000CC1942 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC441EC02E6000CC1942 /* ProfileViewController.swift */; };
+		1A23CC491EC0920D00CC1942 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC481EC0920D00CC1942 /* SearchViewController.swift */; };
+		1A23CC541EC0B47D00CC1942 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC521EC0B47D00CC1942 /* UserTableViewCell.swift */; };
+		1A23CC551EC0B47D00CC1942 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A23CC531EC0B47D00CC1942 /* UserTableViewCell.xib */; };
 		1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */; };
 		1AFD62D21EB8238A0063EE5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */; };
-		1AFD62D41EB8238A0063EE5D /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */; };
 		1AFD62D71EB8238A0063EE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62D51EB8238A0063EE5D /* Main.storyboard */; };
 		1AFD62D91EB8238A0063EE5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62D81EB8238A0063EE5D /* Assets.xcassets */; };
 		1AFD62DC1EB8238A0063EE5D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62DA1EB8238A0063EE5D /* LaunchScreen.storyboard */; };
@@ -30,11 +35,16 @@
 /* Begin PBXFileReference section */
 		1A23CC3C1EBB689600CC1942 /* UploadVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVC.swift; sourceTree = "<group>"; };
 		1A23CC3E1EC0094100CC1942 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		1A23CC401EC0235C00CC1942 /* ProfileOverviewViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileOverviewViewCell.swift; sourceTree = "<group>"; };
+		1A23CC411EC0235C00CC1942 /* ProfileOverviewViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileOverviewViewCell.xib; sourceTree = "<group>"; };
+		1A23CC441EC02E6000CC1942 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1A23CC481EC0920D00CC1942 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		1A23CC521EC0B47D00CC1942 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
+		1A23CC531EC0B47D00CC1942 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
 		1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPost.swift; sourceTree = "<group>"; };
 		1A816D2C1EBACCB400F18525 /* SwiftyStarRatingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyStarRatingView.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SkateChalllengeApp-cwdxowabfqhzfndqedztwwqehzra/Build/Products/Debug-iphonesimulator/SwiftyStarRatingView/SwiftyStarRatingView.framework"; sourceTree = "<group>"; };
 		1AFD62CE1EB8238A0063EE5D /* SkateChalllengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkateChalllengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadViewController.swift; sourceTree = "<group>"; };
 		1AFD62D61EB8238A0063EE5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1AFD62D81EB8238A0063EE5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AFD62DB1EB8238A0063EE5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -65,6 +75,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A23CC461EC075F200CC1942 /* LoginVCs */ = {
+			isa = PBXGroup;
+			children = (
+				1AFD62E91EB89AF30063EE5D /* DetailSignUpViewController.swift */,
+				1AFD62E71EB887A40063EE5D /* SignUpViewController.swift */,
+				1AFD62E51EB87D2F0063EE5D /* LoginViewController.swift */,
+			);
+			name = LoginVCs;
+			sourceTree = "<group>";
+		};
+		1A23CC471EC0760A00CC1942 /* MainVCs */ = {
+			isa = PBXGroup;
+			children = (
+				1AFD62ED1EB89D330063EE5D /* ExploreViewController.swift */,
+				1AFD62F31EB97D720063EE5D /* ChallengeListViewController.swift */,
+				1A23CC481EC0920D00CC1942 /* SearchViewController.swift */,
+				1A23CC441EC02E6000CC1942 /* ProfileViewController.swift */,
+				1A23CC3C1EBB689600CC1942 /* UploadVC.swift */,
+			);
+			name = MainVCs;
+			sourceTree = "<group>";
+		};
+		1A23CC561EC0B49700CC1942 /* Classes and Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1A23CC3E1EC0094100CC1942 /* User.swift */,
+				1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */,
+				1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */,
+			);
+			name = "Classes and Extensions";
+			sourceTree = "<group>";
+		};
+		1A23CC571EC0B4C300CC1942 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */,
+				1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */,
+				1A23CC401EC0235C00CC1942 /* ProfileOverviewViewCell.swift */,
+				1A23CC411EC0235C00CC1942 /* ProfileOverviewViewCell.xib */,
+				1A23CC521EC0B47D00CC1942 /* UserTableViewCell.swift */,
+				1A23CC531EC0B47D00CC1942 /* UserTableViewCell.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		1AFD62C51EB8238A0063EE5D = {
 			isa = PBXGroup;
 			children = (
@@ -87,19 +142,11 @@
 			isa = PBXGroup;
 			children = (
 				1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */,
-				1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */,
-				1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */,
 				1AFD62D51EB8238A0063EE5D /* Main.storyboard */,
-				1AFD62F31EB97D720063EE5D /* ChallengeListViewController.swift */,
-				1AFD62D31EB8238A0063EE5D /* UploadViewController.swift */,
-				1A23CC3C1EBB689600CC1942 /* UploadVC.swift */,
-				1AFD62ED1EB89D330063EE5D /* ExploreViewController.swift */,
-				1A23CC3E1EC0094100CC1942 /* User.swift */,
-				1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */,
-				1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */,
-				1AFD62E91EB89AF30063EE5D /* DetailSignUpViewController.swift */,
-				1AFD62E71EB887A40063EE5D /* SignUpViewController.swift */,
-				1AFD62E51EB87D2F0063EE5D /* LoginViewController.swift */,
+				1A23CC571EC0B4C300CC1942 /* Views */,
+				1A23CC561EC0B49700CC1942 /* Classes and Extensions */,
+				1A23CC471EC0760A00CC1942 /* MainVCs */,
+				1A23CC461EC075F200CC1942 /* LoginVCs */,
 				1AFD62D81EB8238A0063EE5D /* Assets.xcassets */,
 				1AFD62DA1EB8238A0063EE5D /* LaunchScreen.storyboard */,
 				1AFD62DD1EB8238A0063EE5D /* Info.plist */,
@@ -190,7 +237,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AFD62DC1EB8238A0063EE5D /* LaunchScreen.storyboard in Resources */,
+				1A23CC431EC0235C00CC1942 /* ProfileOverviewViewCell.xib in Resources */,
 				1AFD62F21EB8D3740063EE5D /* VideoPostViewCell.xib in Resources */,
+				1A23CC551EC0B47D00CC1942 /* UserTableViewCell.xib in Resources */,
 				1AFD62E41EB8279F0063EE5D /* GoogleService-Info.plist in Resources */,
 				1AFD62D91EB8238A0063EE5D /* Assets.xcassets in Resources */,
 				1AFD62D71EB8238A0063EE5D /* Main.storyboard in Resources */,
@@ -252,14 +301,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A23CC491EC0920D00CC1942 /* SearchViewController.swift in Sources */,
 				1AFD62E61EB87D2F0063EE5D /* LoginViewController.swift in Sources */,
 				1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */,
 				1AFD62EC1EB89C2C0063EE5D /* Extensions.swift in Sources */,
+				1A23CC541EC0B47D00CC1942 /* UserTableViewCell.swift in Sources */,
 				1AFD62F11EB8D3740063EE5D /* VideoPostViewCell.swift in Sources */,
+				1A23CC451EC02E6000CC1942 /* ProfileViewController.swift in Sources */,
 				1A23CC3D1EBB689600CC1942 /* UploadVC.swift in Sources */,
+				1A23CC421EC0235C00CC1942 /* ProfileOverviewViewCell.swift in Sources */,
 				1AFD62EA1EB89AF30063EE5D /* DetailSignUpViewController.swift in Sources */,
 				1AFD62F41EB97D720063EE5D /* ChallengeListViewController.swift in Sources */,
-				1AFD62D41EB8238A0063EE5D /* UploadViewController.swift in Sources */,
 				1A23CC3F1EC0094100CC1942 /* User.swift in Sources */,
 				1AFD62E81EB887A40063EE5D /* SignUpViewController.swift in Sources */,
 				1AFD62EE1EB89D330063EE5D /* ExploreViewController.swift in Sources */,

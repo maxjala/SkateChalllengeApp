@@ -48,7 +48,7 @@ class DetailSignUpViewController: UIViewController {
     }
     
     func signUpButtonTapped () {
-        let post : [String : String] = ["screenName": usernameTextField.text!, "desc" : bioTextView.text]
+        let post : [String : String] = ["screenName": usernameTextField.text!,"stance" : "default", "desc" : bioTextView.text]
         self.ref.child("users").child("\(currentUserID)").updateChildValues(post)
         
         self.directToMainViewController()

@@ -68,6 +68,9 @@ class VideoPostViewCell: UITableViewCell {
     }
     
     @IBOutlet weak var ratingLabel: UILabel!
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    
 
     
     static let cellIdentifier = "VideoPostViewCell"

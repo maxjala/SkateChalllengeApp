@@ -22,7 +22,7 @@ class ExploreViewController: UIViewController {
             videoTableView.delegate = self
             videoTableView.dataSource = self
             videoTableView.register(VideoPostViewCell.cellNib, forCellReuseIdentifier: VideoPostViewCell.cellIdentifier)
-            videoTableView.estimatedRowHeight = 520.0
+            videoTableView.estimatedRowHeight = 510.0
             videoTableView.rowHeight = UITableViewAutomaticDimension
         }
     }
@@ -51,11 +51,24 @@ class ExploreViewController: UIViewController {
         }
         
         listenToFirebase()
-        
-        
-        
-           
+    
     }
+    
+    @IBAction func tempLogout(_ sender: Any) {
+        let firebaseAuth = FIRAuth.auth()
+        
+        do {
+            try firebaseAuth?.signOut()
+            let logInVC = storyboard?.instantiateViewController(withIdentifier: "AuthNavController")
+            present(logInVC!, animated: true, completion: nil)
+            
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        
+    }
+
+    
     
     func listenToFirebase(){
         ref.child("posts").observe(.value, with: {(snapshot) in
@@ -88,19 +101,38 @@ class ExploreViewController: UIViewController {
         if let userID = postInfo["userID"] as? String,
             let trickType = postInfo["trickType"] as? String,
             let userProfilePicture = postInfo["profileImageURL"] as? String,
-            let timeStamp = postInfo["timestamp"] as? String,
+            //let timeStamp = postInfo["timestamp"] as? String,
             let postID = id as? String,
             let currentPostId = Int(postID),
             let screenName = postInfo["screenName"] as? String,
             let videoURL = postInfo["postedVideoURL"] as? String,
             let thumbnailURL = postInfo["thumbnailURL"] as? String {
-           
-            let videoPost = VideoPost(anID: currentPostId, aUserID: userID, aUserScreenName: screenName, aUserProfileImageURL: userProfilePicture, aTrickType: trickType, aVideoURL: videoURL, aThumbnailURL: thumbnailURL, aTimeStamp: timeStamp)
+           //let postTime = PostTime(snapshot.key)
+            //let dateSince = postTime.dateSince
+            let videoPost = VideoPost(anID: currentPostId, aUserID: userID, aUserScreenName: screenName, aUserProfileImageURL: userProfilePicture, aTrickType: trickType, aVideoURL: videoURL, aThumbnailURL: thumbnailURL)
+            
+            videoPost.createDateDifference(timeStamp: currentPostId)
+            
+            
 
             self.videoFeed.append(videoPost)
             
             
         }
+    }
+    
+    func createDateDifference(timeStamp: Int) {
+        let dateRangeStart = Date(timeIntervalSince1970: Double(timeStamp))
+        let dateRangeEnd = Date()
+        let components = Calendar.current.dateComponents([.hour, .day, .weekOfYear, .month], from: dateRangeStart, to: dateRangeEnd)
+        
+        print(dateRangeStart)
+        print(dateRangeEnd)
+        print("difference is \(components.hour ?? 0) hours and \(components.day ?? 0) days")
+        
+        
+        //let months = components.month ?? 0
+        //let weeks = components.weekOfYear ?? 0
     }
 
 }
@@ -123,6 +155,7 @@ extension ExploreViewController : UITableViewDataSource {
         cell.previewImageView.loadImageUsingCacheWithUrlString(urlString: thumbnailURL)
         cell.hashtagLabel.text = trickType
         cell.userNameLabel.text = screenName
+        cell.timeLabel.text = currentVideo.timestamp
         
         //Assign Star Ratings
         observeUserRating(_id: currentVideo.videoPostID, _starRating: cell.userRatingView)
