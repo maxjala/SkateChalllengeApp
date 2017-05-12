@@ -77,7 +77,9 @@ class ProfileViewController: UIViewController {
             configureMyProfile()
         case .otherProfile:
             
-            configureOtherProfile()
+            //configureOtherProfile()
+            break
+            
         }
     }
     
@@ -126,6 +128,10 @@ class ProfileViewController: UIViewController {
             self.profileImageURL = userDict["imageURL"] as? String
             self.profileDesc = userDict["desc"] as? String
             
+            if self.currentUserID == self.currentUser?.uid {
+                self.navigationItem.title = self.profileScreenName
+            }
+            
             self.chosenProfile.removeAll()
             
             if self.profileContent.count > 1 {
@@ -133,7 +139,6 @@ class ProfileViewController: UIViewController {
             }
             
             self.addUser(id: snapshot.key, userInfo: userDict)
-            //self.profileContent.append(self.chosenProfile)
             self.profileContent.insert(self.chosenProfile, at: 0)
             self.userPostTableView.reloadData()
             
@@ -217,7 +222,6 @@ class ProfileViewController: UIViewController {
             
             
         })
-        
         
     }
     
@@ -455,6 +459,7 @@ extension ProfileViewController : UITableViewDataSource {
         self.ref.child("users").child(currentUserID).child("followers").child((currentUser?.uid)!).removeValue()
         
         sender.setTitle("Follow", for: .normal)
+        //self.profileFollowers.removeLast()
     }
     
     
@@ -484,6 +489,15 @@ extension ProfileViewController : VideoPostDelegate {
         let rate = [self.currentUserID: "\(rating)"]
         self.ref.child("posts").child("\(post.videoPostID)").child("ratings").updateChildValues(rate)
     }
+    
+    func passTrickTag(_ post: VideoPost) {
+        
+    }
+    
+    func challengeTrickIfAvailable(_ post: VideoPost) {
+        
+    }
+
     
 }
 

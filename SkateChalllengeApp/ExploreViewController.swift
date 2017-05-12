@@ -11,9 +11,15 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 //import MobileCoreServices
+import FBSDKLoginKit
 import AVKit
 import AVFoundation
 import Cosmos
+
+enum DisplayType {
+    case homeDisplay
+    case exploreDisplay
+}
 
 class ExploreViewController: UIViewController {
     
@@ -26,6 +32,8 @@ class ExploreViewController: UIViewController {
             videoTableView.rowHeight = UITableViewAutomaticDimension
         }
     }
+    
+    var profileType : DisplayType = .homeDisplay
     
 
     //var filteredPictureFeed: [PicturePost] = []
@@ -50,7 +58,8 @@ class ExploreViewController: UIViewController {
             currentUserID = id
         }
         
-        listenToFirebase()
+        //listenToFirebase()
+        fetchFollowingUsers()
     
     }
     
@@ -67,37 +76,90 @@ class ExploreViewController: UIViewController {
         }
         
     }
-
     
-    
-    func listenToFirebase(){
-        ref.child("posts").observe(.value, with: {(snapshot) in
-            print("Value: " , snapshot)
+    func fetchFollowingUsers() {
+        
+        ref.child("users").child(currentUserID).child("following").observe(.value, with: { (snapshot) in
+            print("Value : " , snapshot)
+            
+            self.videoFeed.removeAll()
+            
+            guard let checkedID = snapshot.value as? NSDictionary
+                else {
+                    print("observing child value for \(self.currentUserID) following no value")
+                    self.videoTableView.reloadData()
+                    return
+            }
+            self.followingArray = (checkedID.allKeys as? [String])!
+            self.followingArray.append(self.currentUserID)
+            
+            self.fetchPosts()
             
         })
         
-        ref.child("posts").observe(.childAdded, with:{ (snapshot) in
+    }
+    
+    func fetchPosts() {
+        
+        ref.child("posts").observe(.childAdded, with: { (snapshot) in
+            print("Value : " , snapshot)
             
-            print("Value: ", snapshot)
-            
+            // 3. convert snapshot to dictionary
             guard let info = snapshot.value as? NSDictionary else {return}
+            // 4. add users to array of following users
+            let newPost = self.createVideoPost(id: snapshot.key, postInfo: info)
             
-            self.addToVideoFeed(id:snapshot.key, postInfo:info)
+//            if let tempPost = newPost {
+                self.addToMyFeed(newPost!)
+            //}
             
-            self.videoFeed.sort(by:{(vid1, vid2) -> Bool in
-                return vid1.videoPostID > vid2.videoPostID
+            // sort
+            self.videoFeed.sort(by: { (picture1, picture2) -> Bool in
+                return picture1.videoPostID > picture2.videoPostID
+                
             })
-            
-            if let lastPost = self.videoFeed.last {
-                self.lastPostID = lastPost.videoPostID
-            }
             
             self.videoTableView.reloadData()
             
+            
         })
+        
+        //self.videoTableView.reloadData()
+        
     }
+
     
-    func addToVideoFeed(id: Any, postInfo: NSDictionary) {
+    
+//    func listenToFirebase(){
+//        ref.child("posts").observe(.value, with: {(snapshot) in
+//            print("Value: " , snapshot)
+//            
+//        })
+//        
+//        ref.child("posts").observe(.childAdded, with:{ (snapshot) in
+//            
+//            print("Value: ", snapshot)
+//            
+//            guard let info = snapshot.value as? NSDictionary else {return}
+//            
+//            self.addToVideoFeed(id:snapshot.key, postInfo:info)
+//            
+//            self.videoFeed.sort(by:{(vid1, vid2) -> Bool in
+//                return vid1.videoPostID > vid2.videoPostID
+//            })
+//            
+//            if let lastPost = self.videoFeed.last {
+//                self.lastPostID = lastPost.videoPostID
+//            }
+//            
+//            self.videoTableView.reloadData()
+//            
+//        })
+//    }
+    
+
+    
+    func createVideoPost(id: Any, postInfo: NSDictionary) -> VideoPost? {
         if let userID = postInfo["userID"] as? String,
             let trickType = postInfo["trickType"] as? String,
             let userProfilePicture = postInfo["profileImageURL"] as? String,
@@ -113,27 +175,25 @@ class ExploreViewController: UIViewController {
             
             videoPost.createDateDifference(timeStamp: currentPostId)
             
+            //self.videoFeed.append(videoPost)
             
-
-            self.videoFeed.append(videoPost)
-            
-            
+            return videoPost
         }
+        return nil
     }
     
-    func createDateDifference(timeStamp: Int) {
-        let dateRangeStart = Date(timeIntervalSince1970: Double(timeStamp))
-        let dateRangeEnd = Date()
-        let components = Calendar.current.dateComponents([.hour, .day, .weekOfYear, .month], from: dateRangeStart, to: dateRangeEnd)
+    func addToMyFeed(_ post : VideoPost) {
         
-        print(dateRangeStart)
-        print(dateRangeEnd)
-        print("difference is \(components.hour ?? 0) hours and \(components.day ?? 0) days")
-        
-        
-        //let months = components.month ?? 0
-        //let weeks = components.weekOfYear ?? 0
+        for each in self.followingArray {
+            if each == post.userID {
+                
+                self.videoFeed.append(post)
+                
+            }
+        }
+        //self.videoTableView.reloadData()
     }
+
 
 }
 
@@ -156,10 +216,11 @@ extension ExploreViewController : UITableViewDataSource {
         cell.hashtagLabel.text = trickType
         cell.userNameLabel.text = screenName
         cell.timeLabel.text = currentVideo.timestamp
+        //cell.exploreButton.addTarget(self, action: #selector(exploreButtonTapped), for: .touchUpInside)
         
         //Assign Star Ratings
         observeUserRating(_id: currentVideo.videoPostID, _starRating: cell.userRatingView)
-        observeAllRatings(_id: currentVideo.videoPostID, _starRatings: cell.publicRatingView)
+        observeAllRatings(_id: currentVideo.videoPostID, _starRatings: cell.publicRatingView, _labelRatings: cell.ratingLabel)
         
         cell.delegate = self
         cell.videoPost = currentVideo
@@ -167,6 +228,43 @@ extension ExploreViewController : UITableViewDataSource {
         return cell
         
     }
+    
+    //MARK : VIDEOPOSTCELL FUNCTIONS
+    
+    func exploreButtonTapped(_ trickTag: String) {
+        UserDefaults.saveTag(trickTag)
+        tabBarController?.selectedIndex = 2
+    }
+    
+    func challengeButtonTapped(_ tricktag: String) {
+        let word = tricktag.lowercased()
+        let firebaseKey = word.replacingOccurrences(of: "#", with: "")
+        let currentDate = Date()
+        let currentTimeStamp = Int(currentDate.timeIntervalSince1970)
+        let twoHrsInSecs = 7200
+        
+        ref.child("users").child(currentUserID).child("posts").child(firebaseKey).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let posts = snapshot.value as? NSDictionary else {self.presentUploadVC(tricktag); return}
+            guard let challengePosts = posts.allKeys as? [String] else {return}
+            
+            let lastPost = challengePosts.last
+            let lastPostTime = Int(lastPost!)
+            
+            if currentTimeStamp - twoHrsInSecs > lastPostTime! {
+                self.presentUploadVC(tricktag)
+            } else {
+                return
+            }
+        })
+    }
+    
+    func presentUploadVC(_ trickTag: String) {
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "UploadVC") as? UploadVC
+            else {return}
+        vc.chosenChallenge = trickTag
+        navigationController?.present(vc, animated: true, completion: nil)
+    }
+    
     
     //Video Streaming Functions For Cell
     func handlePlay(_videoURL: String, _videoView: UIView) {
@@ -207,12 +305,12 @@ extension ExploreViewController : UITableViewDataSource {
         })
     }
     
-    func observeAllRatings(_id: Int, _starRatings: CosmosView) {
+    func observeAllRatings(_id: Int, _starRatings: CosmosView, _labelRatings: UILabel) {
         ref.child("posts").child("\(_id)").child("ratings").observe(.value, with: {(snapshot) in
             print("Value: " , snapshot)
             
             //guard let existingRating = snapshot.value as? String else {return}
-            var averageRating = 0.0
+            var totalRating = 0.0
             
             guard let ratingDict = snapshot.value as? NSDictionary else {return}
             let ratingCount = snapshot.childrenCount
@@ -220,18 +318,23 @@ extension ExploreViewController : UITableViewDataSource {
             guard let ratingValues = ratingDict.allValues as? [String] else {return}
             
             for each in ratingValues {
-                averageRating += Double(each)!
+                totalRating += Double(each)!
             }
             
-            _starRatings.rating = averageRating/Double(ratingCount)
+            let averageRating = totalRating/Double(ratingCount)
+            
+            _starRatings.rating = averageRating
+            if ratingCount > 1 {
+                _labelRatings.text = "\(ratingCount) people rated this \(averageRating)"
+                return
+            }
+            _labelRatings.text = "\(ratingCount) person rated this \(averageRating)"
         })
     }
-    
-    //func table
-    
-    
-    
+
 }
+
+
 
 extension ExploreViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -255,6 +358,14 @@ extension ExploreViewController : VideoPostDelegate {
     func sendRatingToFirebase(_ post: VideoPost, _ rating: Double) {
         let rate = [self.currentUserID: "\(rating)"]
         self.ref.child("posts").child("\(post.videoPostID)").child("ratings").updateChildValues(rate)
+    }
+    
+    func passTrickTag(_ post: VideoPost) {
+        exploreButtonTapped(post.trickType)
+    }
+    
+    func challengeTrickIfAvailable(_ post: VideoPost) {
+        challengeButtonTapped(post.trickType)
     }
     
 }

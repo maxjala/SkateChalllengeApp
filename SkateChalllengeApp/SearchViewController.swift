@@ -10,7 +10,6 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
-//import MobileCoreServices
 import AVKit
 import AVFoundation
 import Cosmos
@@ -23,6 +22,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
             searchTableView.dataSource = self
             searchTableView.register(VideoPostViewCell.cellNib, forCellReuseIdentifier: VideoPostViewCell.cellIdentifier)
             searchTableView.register(UserTableViewCell.cellNib, forCellReuseIdentifier: UserTableViewCell.cellIdentifier)
+            searchTableView.register(TrickTableViewCell.cellNib, forCellReuseIdentifier: TrickTableViewCell.cellIdentifier)
             
             searchTableView.estimatedRowHeight = 510.0
             searchTableView.rowHeight = UITableViewAutomaticDimension
@@ -38,12 +38,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         }
     }
     
-//    @IBOutlet weak var segmentedControl: UISegmentedControl! {
-//        didSet{
-//            segmentedControl.addTarget(self, action: #selector(indexChanged), for: .touchUpInside)
-//        }
-//    }
-    
     var videoPosts : [VideoPost] = []
     var users : [User] = []
     var filteredUsers : [User] = []
@@ -58,6 +52,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     
     var currentUserID : String = ""
     var worstRating : Double = 0.0
+    var receivedSearch : String?
     
     
     
@@ -76,28 +71,51 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        configureSearch()
+    }
+    
+    func configureSearch() {
+        if let tag = UserDefaults.getTag() {
+            DispatchQueue.main.async {
+                self.segmentedControl.selectedSegmentIndex = 1
+                self.activeArray = self.videoPosts
+                self.searchBar.text = tag
+                self.searchActive = true
+                self.searchTag(self.searchBar.text)
+                self.searchTableView.reloadData()
+            }
+        }
+    }
+    
+    func useCorrectArray() {
+        DispatchQueue.main.async {
+            if self.segmentedControl.selectedSegmentIndex == 0 {
+                self.activeArray = self.users
+            } else {
+                self.activeArray = self.videoPosts
+                if self.searchActive {
+                    self.searchTag(self.searchBar.text)
+                }
+            }
+            self.searchTableView.reloadData()
+        }
+    }
+    
+    
+    
     func listenToFirebase(){
         ref.child("users").observe(.childAdded, with: { (snapshot) in
             print("Value : " , snapshot)
             
-            // 3. convert snapshot to dictionary
             guard let info = snapshot.value as? [String : Any] else {return}
-            // 4. add student to array of messages
             self.addUser(id: snapshot.key, userInfo: info)
             
-            // sort
             self.users.sort(by: { (user1, user2) -> Bool in
                 return user1.screenName  < user2.screenName
-                
-                //LATER NEED TO CHANGE TO SORT BY POST TIME
             })
-            
-            //self.filteredUsers = self.allUsers
-            
-            
-            // 5. update table view
-            self.activeArray = self.users
-            self.searchTableView.reloadData()
+
+            self.useCorrectArray()
             
         })
         
@@ -121,8 +139,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
             if let lastPost = self.videoPosts.last {
                 self.worstRating = lastPost.rating
             }
-            
-            self.searchTableView.reloadData()
+            self.useCorrectArray()
             
         })
     }
@@ -138,7 +155,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
             let newUser = User(anId: userId, anEmail: userEmail, aScreenName: screenName, aDesc: userDescription, anImageURL: userImage, aStance: userStance)
             
             self.users.append(newUser)
-            //self.profileContent.append(chosenProfile)
             
         }
     }
@@ -148,7 +164,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         if let userID = postInfo["userID"] as? String,
             let trickType = postInfo["trickType"] as? String,
             let userProfilePicture = postInfo["profileImageURL"] as? String,
-            //let timeStamp = postInfo["timestamp"] as? String,
             let postID = id as? String,
             let currentPostId = Int(postID),
             let screenName = postInfo["screenName"] as? String,
@@ -169,7 +184,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         ref.child("posts").child(postID).child("ratings").observe(.value, with: {(snapshot) in
             print("Value: " , snapshot)
             
-            //guard let existingRating = snapshot.value as? String else {return}
             var rating = 0.0
             
             guard let ratingDict = snapshot.value as? NSDictionary else {return}
@@ -180,8 +194,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
             for each in ratingValues {
                 rating += Double(each)!
             }
-            
-            //_starRatings.rating = averageRating/Double(ratingCount)
+
             videoPost.rating = rating/Double(ratingCount)
         })
     }
@@ -199,8 +212,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
             self.searchTableView.reloadData()
             break
         default:
-//            activeArray = users
-//            self.searchTableView.reloadData()
             break
         }
     }
@@ -226,47 +237,48 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         
         if segmentedControl.selectedSegmentIndex == 0 {
         
-        if searchText.characters.count == 0 {
-            
-            activeArray = users
-            self.searchTableView.reloadData()
-            return
-        }
-        
-        activeArray = users.filter({ (user) -> Bool in
-            let nameString: NSString = user.screenName as NSString
-            let range = nameString.range(of: searchText, options: .caseInsensitive)
-            return range.location != NSNotFound
-        })
-            
-        } else {
-            
             if searchText.characters.count == 0 {
                 
-                activeArray = videoPosts
+                activeArray = users
                 self.searchTableView.reloadData()
                 return
             }
             
-            self.videoPosts.sort(by:{(vid1, vid2) -> Bool in
-                print("\(vid1.rating) > \(vid2.rating)")
-                return vid1.rating > vid2.rating
-            })
-            
-            activeArray = videoPosts.filter({ (post) -> Bool in
-                let nameString: NSString = post.trickType as NSString
+            activeArray = users.filter({ (user) -> Bool in
+                let nameString: NSString = user.screenName as NSString
                 let range = nameString.range(of: searchText, options: .caseInsensitive)
                 return range.location != NSNotFound
             })
             
+        } else {
+            searchTag(searchText)
         }
-        
-        
-        
         self.searchTableView.reloadData()
     }
 
-    
+    func searchTag(_ str : String?) {
+        guard let tag = str
+            else  { return }
+        
+        if tag.characters.count == 0 {
+            
+            activeArray = videoPosts
+            self.searchTableView.reloadData()
+            return
+        }
+        
+        self.videoPosts.sort(by:{(vid1, vid2) -> Bool in
+            print("\(vid1.rating) > \(vid2.rating)")
+            return vid1.rating > vid2.rating
+        })
+        
+        activeArray = videoPosts.filter({ (post) -> Bool in
+            let nameString: NSString = post.trickType as NSString
+            let range = nameString.range(of: tag, options: .caseInsensitive)
+            return range.location != NSNotFound
+        })
+
+    }
 }
 
 
@@ -375,19 +387,33 @@ extension SearchViewController : UITableViewDataSource {
         })
     }
     
+
+    
     
 }
 
 extension SearchViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let chosenUser = users[indexPath.row] as? User {
-           let controller = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController
-            controller?.currentUserID = chosenUser.id
-            controller?.selectedProfile = chosenUser
-            controller?.profileType = .otherProfile
-            
-            navigationController?.pushViewController(controller!, animated: true)
+        
+        if segmentedControl.selectedSegmentIndex == 0 {
+        
+            if let chosenUser = users[indexPath.row] as? User {
+               let controller = storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController
+                controller?.currentUserID = chosenUser.id
+                controller?.selectedProfile = chosenUser
+                controller?.profileType = .otherProfile
+                
+                navigationController?.pushViewController(controller!, animated: true)
+            }
         }
+//        } else {
+//            //tableView.deleteRows(at: [indexPath], with: .fade)
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TrickTableViewCell", for: indexPath) as? TrickTableViewCell else {return}
+//            cell.nameLabel.text = videoPosts[indexPath.row].userScreenName
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.insertRows(at: [indexPath], with: .fade)
+//            tableView.reloadData()
+//        }
     }
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -395,8 +421,6 @@ extension SearchViewController : UITableViewDelegate {
         player = nil
         
     }
-    
-    
 }
 
 extension SearchViewController : VideoPostDelegate {
@@ -409,6 +433,14 @@ extension SearchViewController : VideoPostDelegate {
         self.ref.child("posts").child("\(post.videoPostID)").child("ratings").updateChildValues(rate)
     }
     
+    func passTrickTag(_ post: VideoPost) {
+        
+    }
+    
+    func challengeTrickIfAvailable(_ post: VideoPost) {
+        
+    }
+
 }
 
 

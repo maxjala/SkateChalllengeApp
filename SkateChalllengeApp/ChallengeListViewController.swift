@@ -96,29 +96,26 @@ class ChallengeListViewController: UIViewController {
         //test timeInt 1493793537
         if challengeLabel.text != "" {
         
-            ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).observe(.value, with: { (snapshot) in
-                print("Value : " , snapshot)
-                
-                guard let posts = snapshot.value as? NSDictionary else {self.continueToUpload(); return}
+            ref.child("users").child(currentUserID).child("posts").child(firebaseKey!).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let posts = snapshot.value as? NSDictionary else {self.presentUploadVC(); return}
                 guard let challengePosts = posts.allKeys as? [String] else {return}
                 
                 let lastPost = challengePosts.last
                 let lastPostTime = Int(lastPost!)
                 
                 if currentTimeStamp - twoHrsInSecs > lastPostTime! {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadVC") as? UploadVC
-                    vc?.chosenChallenge = self.challengeLabel.text!
-                    self.navigationController?.present(vc!, animated: true, completion: nil)
+                    self.presentUploadVC()
                 } else {
                     return
                 }
-                
-                
-                //guard let post = snapshot.
-                
-                
             })
         }
+    }
+    
+    func presentUploadVC() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadVC") as? UploadVC
+        vc?.chosenChallenge = self.challengeLabel.text!
+        self.navigationController?.present(vc!, animated: true, completion: nil)
     }
 
 

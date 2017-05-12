@@ -14,6 +14,8 @@ protocol VideoPostDelegate {
     func loadVideo(_ post: VideoPost, _ videoView: UIView)
     func sendRatingToFirebase(_ post: VideoPost, _ rating: Double)
     //func observeRatingFromFirebase(_ post: VideoPost, _ videoRating: CosmosView)
+    func passTrickTag(_ post: VideoPost)
+    func challengeTrickIfAvailable(_ post: VideoPost)
 }
 
 class VideoPostViewCell: UITableViewCell {
@@ -46,9 +48,17 @@ class VideoPostViewCell: UITableViewCell {
     
     @IBOutlet weak var commentButton: UIButton!
     
-    @IBOutlet weak var challengeButton: UIButton!
+    @IBOutlet weak var challengeButton: UIButton!{
+        didSet{
+            challengeButton.addTarget(self, action: #selector(challengeButtonTapped), for: .touchUpInside)
+        }
+    }
     
-    @IBOutlet weak var exploreButton: UIButton!
+    @IBOutlet weak var exploreButton: UIButton! {
+        didSet{
+            exploreButton.addTarget(self, action: #selector(exploreButtonTapped), for: .touchUpInside)
+        }
+    }
     
     @IBOutlet weak var hashtagLabel: UILabel!
     
@@ -104,20 +114,26 @@ class VideoPostViewCell: UITableViewCell {
         }
     }
         
-//    func observeRating() -> Double {
-//        if delegate != nil {
-//            if let _videoPost = videoPost,
-//                let _videoRating = userRatingView {
-//                delegate?.observeRatingFromFirebase(_videoPost, _videoRating)            }
-//        }
-//        return 0.0
-//    }
+    func exploreButtonTapped() {
+        if delegate != nil {
+            if let _videoPost = videoPost {
+                delegate?.passTrickTag(_videoPost)           }
+        }
+    }
+    
+    func challengeButtonTapped() {
+        if delegate != nil {
+            if let _videoPost = videoPost {
+                delegate?.challengeTrickIfAvailable(_videoPost)           }
+        }
+    }
 
     func cosmosViewTapped(_ rating: Double) {
         
         if delegate != nil {
             if let _videoPost = videoPost {
-                delegate?.sendRatingToFirebase(_videoPost, rating)            }
+                delegate?.sendRatingToFirebase(_videoPost, rating)
+            }
         }
     }
 }

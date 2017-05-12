@@ -13,5 +13,8 @@ target 'SkateChalllengeApp' do
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
     pod 'Cosmos'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKShareKit'
+    pod 'FBSDKLoginKit'
 
 end

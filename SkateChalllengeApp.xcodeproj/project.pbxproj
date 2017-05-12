@@ -15,6 +15,9 @@
 		1A23CC491EC0920D00CC1942 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC481EC0920D00CC1942 /* SearchViewController.swift */; };
 		1A23CC541EC0B47D00CC1942 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A23CC521EC0B47D00CC1942 /* UserTableViewCell.swift */; };
 		1A23CC551EC0B47D00CC1942 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A23CC531EC0B47D00CC1942 /* UserTableViewCell.xib */; };
+		1A6240771EC352C900FD327C /* TrickTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6240751EC352C900FD327C /* TrickTableViewCell.swift */; };
+		1A6240781EC352C900FD327C /* TrickTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A6240761EC352C900FD327C /* TrickTableViewCell.xib */; };
+		1A62407A1EC4147900FD327C /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6240791EC4147900FD327C /* UserDefault.swift */; };
 		1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */; };
 		1AFD62D21EB8238A0063EE5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD62D11EB8238A0063EE5D /* AppDelegate.swift */; };
 		1AFD62D71EB8238A0063EE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD62D51EB8238A0063EE5D /* Main.storyboard */; };
@@ -41,6 +44,9 @@
 		1A23CC481EC0920D00CC1942 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		1A23CC521EC0B47D00CC1942 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		1A23CC531EC0B47D00CC1942 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
+		1A6240751EC352C900FD327C /* TrickTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrickTableViewCell.swift; sourceTree = "<group>"; };
+		1A6240761EC352C900FD327C /* TrickTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrickTableViewCell.xib; sourceTree = "<group>"; };
+		1A6240791EC4147900FD327C /* UserDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPost.swift; sourceTree = "<group>"; };
 		1A816D2C1EBACCB400F18525 /* SwiftyStarRatingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyStarRatingView.framework; path = "../../../../Library/Developer/Xcode/DerivedData/SkateChalllengeApp-cwdxowabfqhzfndqedztwwqehzra/Build/Products/Debug-iphonesimulator/SwiftyStarRatingView/SwiftyStarRatingView.framework"; sourceTree = "<group>"; };
 		1AFD62CE1EB8238A0063EE5D /* SkateChalllengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkateChalllengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				1A23CC3E1EC0094100CC1942 /* User.swift */,
+				1A6240791EC4147900FD327C /* UserDefault.swift */,
 				1A7DB3931EB9E6BC00A874CB /* VideoPost.swift */,
 				1AFD62EB1EB89C2C0063EE5D /* Extensions.swift */,
 			);
@@ -112,6 +119,8 @@
 			children = (
 				1AFD62EF1EB8D3740063EE5D /* VideoPostViewCell.swift */,
 				1AFD62F01EB8D3740063EE5D /* VideoPostViewCell.xib */,
+				1A6240751EC352C900FD327C /* TrickTableViewCell.swift */,
+				1A6240761EC352C900FD327C /* TrickTableViewCell.xib */,
 				1A23CC401EC0235C00CC1942 /* ProfileOverviewViewCell.swift */,
 				1A23CC411EC0235C00CC1942 /* ProfileOverviewViewCell.xib */,
 				1A23CC521EC0B47D00CC1942 /* UserTableViewCell.swift */,
@@ -243,6 +252,7 @@
 				1AFD62E41EB8279F0063EE5D /* GoogleService-Info.plist in Resources */,
 				1AFD62D91EB8238A0063EE5D /* Assets.xcassets in Resources */,
 				1AFD62D71EB8238A0063EE5D /* Main.storyboard in Resources */,
+				1A6240781EC352C900FD327C /* TrickTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +314,7 @@
 				1A23CC491EC0920D00CC1942 /* SearchViewController.swift in Sources */,
 				1AFD62E61EB87D2F0063EE5D /* LoginViewController.swift in Sources */,
 				1A7DB3941EB9E6BC00A874CB /* VideoPost.swift in Sources */,
+				1A6240771EC352C900FD327C /* TrickTableViewCell.swift in Sources */,
 				1AFD62EC1EB89C2C0063EE5D /* Extensions.swift in Sources */,
 				1A23CC541EC0B47D00CC1942 /* UserTableViewCell.swift in Sources */,
 				1AFD62F11EB8D3740063EE5D /* VideoPostViewCell.swift in Sources */,
@@ -312,6 +323,7 @@
 				1A23CC421EC0235C00CC1942 /* ProfileOverviewViewCell.swift in Sources */,
 				1AFD62EA1EB89AF30063EE5D /* DetailSignUpViewController.swift in Sources */,
 				1AFD62F41EB97D720063EE5D /* ChallengeListViewController.swift in Sources */,
+				1A62407A1EC4147900FD327C /* UserDefault.swift in Sources */,
 				1A23CC3F1EC0094100CC1942 /* User.swift in Sources */,
 				1AFD62E81EB887A40063EE5D /* SignUpViewController.swift in Sources */,
 				1AFD62EE1EB89D330063EE5D /* ExploreViewController.swift in Sources */,
