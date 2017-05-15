@@ -447,7 +447,7 @@ extension ProfileViewController : UITableViewDataSource {
         let follower = [(currentUser?.uid)!: "follower"]
         self.ref.child("users").child(currentUserID).child("followers").updateChildValues(follower)
 
-        sender.setTitle("Unfollow", for: .normal)
+        sender.setTitle("Following", for: .normal)
         
     }
     

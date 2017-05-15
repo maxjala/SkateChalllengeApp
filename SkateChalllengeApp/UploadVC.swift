@@ -189,7 +189,7 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
             print("error")
         }
         if err != nil {
-            print("error: \(err?.localizedDescription)")
+            print("error: \(String(describing: err?.localizedDescription))")
         }
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -217,7 +217,7 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         if !videoFileOutput.isRecording {
         
             captureSession.addOutput(videoFileOutput)
-            //captureSession.addOutput(audioFileOutput)
+            
             let recordingDelegate:AVCaptureFileOutputRecordingDelegate? = self
             videoFileOutput.recordsVideoOrientationAndMirroringChangesAsMetadataTrack(for: previewLayer?.connection)
             videoFileOutput.startRecording(toOutputFileURL: filePath, recordingDelegate: recordingDelegate)
@@ -232,7 +232,6 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
             videoFileOutput.stopRecording()
             captureSession.removeOutput(videoFileOutput)
             captureSession.stopRunning()
-            //timer.invalidate()
 
         }
     }
@@ -240,10 +239,6 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     func counter() {
         seconds -= 1
         timerLabel.text = "\(seconds)"
-        
-//        if seconds == 0 {
-//            timer.invalidate()
-//        }
     }
     
     func postPrivatelyFirst() {
@@ -276,7 +271,6 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
         let transform2 = transform1.rotated(by: CGFloat( M_PI_2 ) )
         transformer.setTransform( transform2, at: kCMTimeZero)
         
-        //let transf = AVMutableVideoCompositionLayerInstruction(assetTrack: clipVideoTrack)
         
         let instruction = AVMutableVideoCompositionInstruction()
         instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds( 60, 30) )
@@ -306,14 +300,11 @@ class UploadVC: UIViewController, AVCaptureFileOutputRecordingDelegate  {
     
     func presentAVPlayerLayer(){
         previewLayer?.removeFromSuperlayer()
-        //cameraFrameView1.isHidden = true
-        //cameraFrameView2.isHidden = true
         playButton.isHidden = false
         recordButton.isHidden = true
         timerLabel.isHidden = true
         toggleCameraButton.isHidden = true
         backButton.isHidden = false
-        //view.sendSubview(toBack: toggleCameraButton)
         view.bringSubview(toFront: challengeLabel)
         view.bringSubview(toFront: backButton)
         view.bringSubview(toFront: postButton)

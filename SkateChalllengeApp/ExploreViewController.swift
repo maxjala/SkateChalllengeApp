@@ -129,36 +129,6 @@ class ExploreViewController: UIViewController {
     }
 
     
-    
-//    func listenToFirebase(){
-//        ref.child("posts").observe(.value, with: {(snapshot) in
-//            print("Value: " , snapshot)
-//            
-//        })
-//        
-//        ref.child("posts").observe(.childAdded, with:{ (snapshot) in
-//            
-//            print("Value: ", snapshot)
-//            
-//            guard let info = snapshot.value as? NSDictionary else {return}
-//            
-//            self.addToVideoFeed(id:snapshot.key, postInfo:info)
-//            
-//            self.videoFeed.sort(by:{(vid1, vid2) -> Bool in
-//                return vid1.videoPostID > vid2.videoPostID
-//            })
-//            
-//            if let lastPost = self.videoFeed.last {
-//                self.lastPostID = lastPost.videoPostID
-//            }
-//            
-//            self.videoTableView.reloadData()
-//            
-//        })
-//    }
-    
-
-    
     func createVideoPost(id: Any, postInfo: NSDictionary) -> VideoPost? {
         if let userID = postInfo["userID"] as? String,
             let trickType = postInfo["trickType"] as? String,
@@ -308,8 +278,7 @@ extension ExploreViewController : UITableViewDataSource {
     func observeAllRatings(_id: Int, _starRatings: CosmosView, _labelRatings: UILabel) {
         ref.child("posts").child("\(_id)").child("ratings").observe(.value, with: {(snapshot) in
             print("Value: " , snapshot)
-            
-            //guard let existingRating = snapshot.value as? String else {return}
+
             var totalRating = 0.0
             
             guard let ratingDict = snapshot.value as? NSDictionary else {return}
